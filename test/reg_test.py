@@ -1,7 +1,7 @@
 import requests
 
 data = {
-        "username": "daft",
+        "username": "dft",
         "email": "a@gmail.com",
         "profile": {
             "info": "i am a man",

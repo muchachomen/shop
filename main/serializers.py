@@ -24,9 +24,10 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class productSerializer(serializers.ModelSerializer):
+
     image = serializers.ImageField(
         max_length=None, use_url=True,
-    )
+    ), ['image']
     class Meta:
         model = Product
         fields = ['id','name','description','cost', 'category', 'image', 'availability']
