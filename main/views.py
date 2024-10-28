@@ -1,7 +1,9 @@
 import requests
+import self
+import stripe
 from django.contrib.auth.models import User
 from django.shortcuts import render
-from rest_framework import generics, viewsets
+from rest_framework import generics, viewsets, status
 from rest_framework.permissions import AllowAny
 from requests import Response
 from rest_framework.views import APIView
@@ -10,6 +12,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from .models import Product
 from .serializers import UserSerializer, productSerializer, categoryserialzer, Orderserializer, CartSerializer
+
+
 # Create your views here.
 
 
@@ -46,6 +50,8 @@ class Products(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = productSerializer
     permission_classes = [AllowAny]
+
+
 
 
 

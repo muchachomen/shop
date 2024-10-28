@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Profile, Product, Categories, Orders, Cart
 from django.contrib.auth.models import User
-
+import datetime
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,13 +25,17 @@ class UserSerializer(serializers.ModelSerializer):
 
 class productSerializer(serializers.ModelSerializer):
 
-    image = serializers.ImageField(
-        max_length=None, use_url=True,
-    ), ['image']
     class Meta:
         model = Product
         fields = ['id','name','description','cost', 'category', 'image', 'availability']
 
+    def cost(self, value):
+        cost = ['cost']
+        if cost not in  0:
+            print("all right")
+        else:
+            raise serializers.ValidationError("wrong number")
+        return value
 
 class categoryserialzer(serializers.ModelSerializer):
     class Meta:
@@ -49,3 +53,7 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = ['product']
+
+
+
+

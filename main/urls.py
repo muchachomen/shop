@@ -10,7 +10,7 @@ router = DefaultRouter()
 router.register(r'products', Products)
 urlpatterns = [
     path('api/', include(router.urls)),
-    path('Profile/', ProfileView.as_view()),
+    path('register/', ProfileView.as_view()),
     path('product/', productList.as_view()),
     path('category/', categoryview.as_view()),
     path('order/', orderview.as_view()),

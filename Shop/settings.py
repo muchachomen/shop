@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework_simplejwt',
     'main',
+    'admins',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -147,5 +148,11 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+STRIPE_SECRET_KEY = 'sk_test_51QDmmSKjD3OjoagkraMKBSULtUnANbHHLpVOKRe4jVPu04Ye1mxoa4lDG7nufdwFpFhCUn2fTjugTUPuhK1RazE100Tx4gwIZ6'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51QDmmSKjD3OjoagkVXkrOokWoldNKNjxwrZqLireR9TSv8aRDXQ5XiB4k7I7PYgUxNjXOsREA5ufejpWjrLHlNyt00LbRKtdLK'
+
+
+
 
 
