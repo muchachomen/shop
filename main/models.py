@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from rest_framework.pagination import PageNumberPagination
 
 
 # Create your models here.
@@ -31,6 +32,16 @@ class Cart(models.Model):
     list = models.TextField()
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
 
+
+class LargeResultsSetPagination(PageNumberPagination):
+    page_size = 1000
+    page_size_query_param = 'page_size'
+    max_page_size = 10000
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 100
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
 
 
 
