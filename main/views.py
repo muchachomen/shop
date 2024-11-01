@@ -9,9 +9,9 @@ from requests import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-
-from .models import Product
-from .serializers import UserSerializer, productSerializer, categoryserialzer, Orderserializer, CartSerializer
+from .permissions import ISAdminBrothers
+from .models import Product, Orders
+from .serializers import UserSerializer, productSerializer, categoryserialzer, Orderserializer, CartSerializer, Reviewserializer
 
 
 # Create your views here.
@@ -23,16 +23,10 @@ class ProfileView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
-
-class productList(generics.CreateAPIView):
-    queryset = Product.objects.all()
-    serializer_class = productSerializer
-    permission_classes = [AllowAny]
-
 class categoryview(generics.CreateAPIView):
     queryset = Product.objects.all()
     serializer_class = categoryserialzer
-    permission_classes = [AllowAny]
+    permission_classes = [ISAdminBrothers]
 
 class orderview(generics.CreateAPIView):
     queryset = Product.objects.all()
@@ -43,15 +37,30 @@ class Cartview(generics.CreateAPIView):
     queryset = Product.objects.all()
     serializer_class = CartSerializer
     permission_classes = [AllowAny]
-
-
-
 class Products(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = productSerializer
     permission_classes = [AllowAny]
 
+class DetailView(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = productSerializer
+    permission_classes = [AllowAny]
 
+class productList(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = productSerializer
+    permission_classes = [AllowAny]
+
+class Orderlist(viewsets.ModelViewSet):
+    queryset = Orders.objects.all()
+    serializer_class = Orderserializer
+    permission_classes = [ISAdminBrothers]
+
+class Reviews(generics.CreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = Reviewserializer
+    permission_classes = [AllowAny]
 
 
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Profile, Product, Categories, Orders, Cart
+from .models import Profile, Product, Categories, Orders, Cart, Review
 from django.contrib.auth.models import User
 import datetime
 
@@ -53,6 +53,13 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = ['product']
+
+
+
+class Reviewserializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'
 
 
 
