@@ -22,7 +22,7 @@ class ProfileView(generics.CreateAPIView):
 class categoryview(generics.CreateAPIView):
     queryset = Product.objects.all()
     serializer_class = categoryserialzer
-    permission_classes = [ISAdminBrothers]
+    permission_classes = [AllowAny]
 
 class orderview(generics.CreateAPIView):
     queryset = Product.objects.all()

@@ -1,7 +1,7 @@
 import requests
 
 data = {
-    "product": 4
+    "product": 1
 
 }
 
