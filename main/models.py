@@ -27,14 +27,16 @@ class Product(models.Model):
         return self.name
 
 
+
 class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=0)
+    quantity = models.IntegerField(validators=[MinValueValidator(1)])
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.quantity} x {self.product.name}'
+
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -57,21 +59,22 @@ class Payment(models.Model):
         return self.name
 
 
-class Orders(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+class Order(models.Model):
+    product = models.ForeignKey(CartItem, on_delete=models.CASCADE, null=True)
     info = models.TextField()
     contacts = models.CharField(max_length=19)
     method = models.ForeignKey(Payment, on_delete=models.CASCADE, null=True)
+    date_added = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.user.username
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     info = models.CharField(max_length=255)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
-    order_history = models.ForeignKey(Orders, on_delete=models.CASCADE, null=True)
+    order_history = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
+    def __str__(self):
+        return self.user.username
 
 
 class Review(models.Model):
