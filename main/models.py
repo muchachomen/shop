@@ -1,3 +1,5 @@
+from decimal import Decimal
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -18,7 +20,7 @@ class Categories(models.Model):
 class Product(models.Model):
     name = models.TextField()
     description = models.TextField()
-    cost = models.IntegerField(validators=[MinValueValidator(0.01)])
+    cost = models.IntegerField(default=0, validators=[MinValueValidator(0.01)])
     category = models.ForeignKey(Categories, on_delete=models.CASCADE, null=True)
     image = models.ImageField()
     availability = models.IntegerField(validators=[MinValueValidator(0)])
@@ -28,15 +30,17 @@ class Product(models.Model):
 
 
 
+def update(self, instance, validated_data):
+        setattr(instance.profile, "lang", validated_data.get("get_lang"))
+        instance.save()
+        return instance
+
+
 class CartItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField(validators=[MinValueValidator(1)])
+    products = models.ForeignKey(Product, on_delete=models.CASCADE)
+    availability = models.IntegerField(default=1, validators=[MinValueValidator(1)])
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'{self.quantity} x {self.product.name}'
-
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -60,11 +64,23 @@ class Payment(models.Model):
 
 
 class Order(models.Model):
-    product = models.ForeignKey(CartItem, on_delete=models.CASCADE, null=True)
-    info = models.TextField()
-    contacts = models.CharField(max_length=19)
-    method = models.ForeignKey(Payment, on_delete=models.CASCADE, null=True)
-    date_added = models.DateTimeField(auto_now_add=True)
+    product = models.ManyToManyField(CartItem, related_name='orders')
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_processed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Order {self.id}"
+
+    def save(self, *args, **kwargs):
+        # Если заказ обрабатывается впервые
+        if self.is_processed and not self.pk:
+            for item in self.product.all():
+                product = item.product
+                if product.quantity < item.quantity:
+                    raise ValueError(f"Not enough stock for {product.name}")
+                product.quantity -= item.quantity
+                product.save()
+        super().save(*args, **kwargs)
 
 
 

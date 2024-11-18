@@ -30,13 +30,6 @@ class productSerializer(serializers.ModelSerializer):
         model = Product
         fields = ['id','name','description','cost', 'category', 'image', 'availability']
 
-    def cost(self, value):
-        cost = ['cost']
-        if cost not in  0:
-            print("all right")
-        else:
-            raise serializers.ValidationError("wrong number")
-        return value
 
 class categoryserialzer(serializers.ModelSerializer):
     class Meta:
@@ -44,16 +37,25 @@ class categoryserialzer(serializers.ModelSerializer):
         fields = ['name']
 
 
-class Orderserializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = '__all__'
-
-
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
-        fields = '__all__'
+        fields = ['id', 'products', 'availability', 'user']
+
+class OrderSerializer(serializers.ModelSerializer):
+
+
+
+    class Meta:
+        model = Order
+        fields = ['id', 'product', 'is_processed', 'created_at']
+
+
+    def create(self, validated_data):
+        items = validated_data.pop('product')
+        order = Order.objects.create(**validated_data)
+        order.items.set(items)  # Связываем CartItem с заказом
+        return order
 
 
 
@@ -63,5 +65,12 @@ class Reviewserializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
+class ProductsUpdateSerializer(serializers.ModelSerializer):
+  availability = serializers.IntegerField(source='get_availability')
+  name = serializers.SerializerMethodField()
+  class Meta:
+        model = Product
+        fields = [
+            'availability', 'name'
+        ]
 
