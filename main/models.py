@@ -64,23 +64,8 @@ class Payment(models.Model):
 
 
 class Order(models.Model):
-    product = models.ManyToManyField(CartItem, related_name='orders')
-    created_at = models.DateTimeField(auto_now_add=True)
-    is_processed = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f"Order {self.id}"
-
-    def save(self, *args, **kwargs):
-        # Если заказ обрабатывается впервые
-        if self.is_processed and not self.pk:
-            for item in self.product.all():
-                product = item.product
-                if product.quantity < item.quantity:
-                    raise ValueError(f"Not enough stock for {product.name}")
-                product.quantity -= item.quantity
-                product.save()
-        super().save(*args, **kwargs)
+    product = models.ForeignKey(CartItem, on_delete=models.CASCADE)
+    method = models.ForeignKey(Payment, on_delete=models.CASCADE)
 
 
 

@@ -48,14 +48,10 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'product', 'is_processed', 'created_at']
+        fields = ['id', 'product', 'method']
 
 
-    def create(self, validated_data):
-        items = validated_data.pop('product')
-        order = Order.objects.create(**validated_data)
-        order.items.set(items)  # Связываем CartItem с заказом
-        return order
+
 
 
 
@@ -65,12 +61,4 @@ class Reviewserializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ProductsUpdateSerializer(serializers.ModelSerializer):
-  availability = serializers.IntegerField(source='get_availability')
-  name = serializers.SerializerMethodField()
-  class Meta:
-        model = Product
-        fields = [
-            'availability', 'name'
-        ]
 

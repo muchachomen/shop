@@ -111,14 +111,3 @@ class ProcessOrderView(APIView):
 
 
 
-class CreateOrderView(APIView):
-    permission_classes = [AllowAny]
-    def post(self, request, *args, **kwargs):
-        serializer = OrderSerializer(data=request.data)
-        if serializer.is_valid():
-            try:
-                order = serializer.save(is_processed=True)  # Создаём заказ и обрабатываем его
-                return Response(OrderSerializer(order).data, status=status.HTTP_201_CREATED)
-            except ValueError as e:
-                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
