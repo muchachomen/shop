@@ -89,12 +89,7 @@ class Cartlist(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
 
 
-class ProductUpdateAPIView(RetrieveUpdateAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductsUpdateSerializer
-    permission_classes = [AllowAny]
-    lookup_field = 'name'
-    lookup_url_kwarg = 'name'
+
 
 class ProcessOrderView(APIView):
     permission_classes = [AllowAny]
