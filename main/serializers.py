@@ -43,10 +43,7 @@ class CartSerializer(serializers.ModelSerializer):
         fields = ['id', 'products', 'availability', 'user']
 
 class OrderSerializer(serializers.ModelSerializer):
-
-
-
-    class Meta:
+      class Meta:
         model = Order
         fields = ['id', 'product', 'method']
 

@@ -12,7 +12,7 @@ from rest_framework.response import Response
 
 from .permissions import ISAdminBrothers
 from .models import Product, Order, LargeResultsSetPagination, CartItem
-from .serializers import UserSerializer, productSerializer, categoryserialzer, OrderSerializer, CartSerializer, Reviewserializer, ProductsUpdateSerializer
+from .serializers import UserSerializer, productSerializer, categoryserialzer, OrderSerializer, CartSerializer, Reviewserializer
 
 
 # Create your views here.
