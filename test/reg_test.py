@@ -1,7 +1,7 @@
 import requests
 
 data = {
-        "username": "dft",
+        "username": "fad",
         "email": "a@gmail.com",
         "profile": {
             "info": "i am a man",
@@ -10,6 +10,6 @@ data = {
         "password": "canti0-5"
 }
 
-response = requests.post("http://127.0.0.1:8000/Profile/", json=data)
+response = requests.post("http://127.0.0.1:8000/register/", json=data)
 print(response.status_code)
 print(response.text)

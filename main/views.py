@@ -1,4 +1,3 @@
-
 from rest_framework.generics import UpdateAPIView, RetrieveUpdateAPIView
 from rest_framework.views import APIView
 from rest_framework import permissions, generics, status, serializers
@@ -40,12 +39,26 @@ class ProfileView(generics.CreateAPIView):
 class Categoryview(generics.CreateAPIView):
     queryset = Product.objects.all()
     serializer_class = categoryserialzer
-    permission_classes = [AllowAny]
+    permission_classes = [ISAdminBrothers]
 
-class Orderview(generics.CreateAPIView):
-    queryset = Product.objects.all()
+class OrderView(generics.CreateAPIView):
+    queryset = Order.objects.all()
     serializer_class = OrderSerializer
     permission_classes = [AllowAny]
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        cart_item_id = data.get("product")
+        try:
+            cart_item = CartItem.objects.get(id=cart_item_id)
+            if cart_item.products.availability >= cart_item.availability:
+                cart_item.products.availability -= cart_item.availability
+                cart_item.products.save()
+            else:
+                return Response({"error": "Not enough availability for this product."},
+                                status=status.HTTP_400_BAD_REQUEST)
+        except CartItem.DoesNotExist:
+            return Response({"error": "Cart item does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
 class Cartview(generics.CreateAPIView):
     queryset = Product.objects.all()
@@ -65,7 +78,7 @@ class Products(viewsets.ModelViewSet):
 class DetailView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = productSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [ISAdminBrothers]
 
 
 class ProductList(generics.ListAPIView):
@@ -82,12 +95,12 @@ class Orderlist(viewsets.ModelViewSet):
 class Reviews(generics.CreateAPIView):
     queryset = Product.objects.all()
     serializer_class = Reviewserializer
+    permission_classes = [AllowAny]
 
 class Cartlist(viewsets.ModelViewSet):
     queryset = CartItem.objects.all()
     serializer_class = CartSerializer
     permission_classes = [AllowAny]
-
 
 
 
@@ -103,6 +116,3 @@ class ProcessOrderView(APIView):
             return Response({"error": "Order not found"}, status=404)
         except ValueError as e:
             return Response({"error": str(e)}, status=400)
-
-
-

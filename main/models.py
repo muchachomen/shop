@@ -11,7 +11,7 @@ from rest_framework.pagination import PageNumberPagination
 
 
 class Categories(models.Model):
-    name = models.TextField()
+    name = models.CharField(max_length=110)
 
     def __str__(self):
         return self.name
@@ -67,6 +67,15 @@ class Order(models.Model):
     product = models.ForeignKey(CartItem, on_delete=models.CASCADE)
     method = models.ForeignKey(Payment, on_delete=models.CASCADE)
 
+    def save(self, *args, **kwargs):
+        # Reduce the availability of the product
+        if self.product.products.availability >= self.product.availability:
+            self.product.products.availability -= self.product.availability
+            self.product.products.save()
+        else:
+            raise ValidationError("Not enough product availability for this order.")
+        super().save(*args, **kwargs)
+
 
 
 class Profile(models.Model):
@@ -82,8 +91,3 @@ class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
     comment = models.CharField(max_length=500)
     rate = models.IntegerField(validators=[MaxValueValidator(5), MinValueValidator(1)])
-
-
-
-
-
