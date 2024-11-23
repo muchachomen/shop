@@ -11,8 +11,10 @@ router = DefaultRouter()
 router.register(r'orders', Orderlist)
 router.register(r'cart', Cartlist)
 router.register(r'products', Products)
+
+
 urlpatterns = [
-    path('api/', include(router.urls)),
+    path('admins/', include(router.urls)),
     path('register/', ProfileView.as_view()),
     path('product/', ProductList.as_view()),
     path('category/', Categoryview.as_view()),
