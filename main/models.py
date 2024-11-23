@@ -43,6 +43,7 @@ class CartItem(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
 
 
+
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 1000
     page_size_query_param = 'page_size'
@@ -64,7 +65,7 @@ class Payment(models.Model):
 
 
 class Order(models.Model):
-    product = models.ForeignKey(CartItem, on_delete=models.CASCADE)
+    product = models.OneToOneField(CartItem, on_delete=models.CASCADE)
     method = models.ForeignKey(Payment, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):

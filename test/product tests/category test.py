@@ -1,7 +1,7 @@
 import requests
 
 data = {
-    "name": "book"
+    "name": ""
 }
 
 response = requests.post("http://127.0.0.1:8000/category/", json=data)

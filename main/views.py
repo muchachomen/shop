@@ -4,7 +4,7 @@ from rest_framework import permissions, generics, status, serializers
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 import json
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 from rest_framework import generics, viewsets, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -41,6 +41,10 @@ class Categoryview(generics.CreateAPIView):
     serializer_class = categoryserialzer
     permission_classes = [ISAdminBrothers]
 
+
+
+
+
 class OrderView(generics.CreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
@@ -59,6 +63,11 @@ class OrderView(generics.CreateAPIView):
                                 status=status.HTTP_400_BAD_REQUEST)
         except CartItem.DoesNotExist:
             return Response({"error": "Cart item does not exist."}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+
 
 class Cartview(generics.CreateAPIView):
     queryset = Product.objects.all()
@@ -100,7 +109,7 @@ class Reviews(generics.CreateAPIView):
 class Cartlist(viewsets.ModelViewSet):
     queryset = CartItem.objects.all()
     serializer_class = CartSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [ISAdminBrothers]
 
 
 
