@@ -6,6 +6,6 @@ data ={
 }
 
 
-response = requests.post("http://127.0.0.1:8000/api/orders/", json= data)
+response = requests.post("http://127.0.0.1:8000/admins/orders/", json= data)
 print(response.status_code)
 print(response.text)
