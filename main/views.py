@@ -11,7 +11,7 @@ from rest_framework.response import Response
 
 from .permissions import ISAdminBrothers
 from .models import Product, Order, LargeResultsSetPagination, CartItem
-from .serializers import UserSerializer, productSerializer, categoryserialzer, OrderSerializer, CartSerializer, Reviewserializer
+from .serializers import UserSerializer, productSerializer, categoryserialzer, OrderSerializer, CartSerializer, Reviewserializer, PaymentSerializer
 
 
 # Create your views here.
@@ -109,7 +109,7 @@ class Reviews(generics.CreateAPIView):
 class Cartlist(viewsets.ModelViewSet):
     queryset = CartItem.objects.all()
     serializer_class = CartSerializer
-    permission_classes = [ISAdminBrothers]
+    permission_classes = [AllowAny]
 
 
 
@@ -125,3 +125,8 @@ class ProcessOrderView(APIView):
             return Response({"error": "Order not found"}, status=404)
         except ValueError as e:
             return Response({"error": str(e)}, status=400)
+
+class PaymentView(generics.CreateAPIView):
+    queryset = Product
+    serializer_class = PaymentSerializer
+    permission_classes = [AllowAny]

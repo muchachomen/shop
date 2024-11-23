@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Profile, Product, Categories, Order, CartItem, Review
+from .models import Profile, Product, Categories, Order, CartItem, Review, Payment
 from django.contrib.auth.models import User
 import datetime
 
@@ -57,5 +57,9 @@ class Reviewserializer(serializers.ModelSerializer):
         model = Review
         fields = '__all__'
 
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = ['name', 'status']
 
 

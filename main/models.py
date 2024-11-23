@@ -42,6 +42,8 @@ class CartItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.products.name
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -92,3 +94,7 @@ class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
     comment = models.CharField(max_length=500)
     rate = models.IntegerField(validators=[MaxValueValidator(5), MinValueValidator(1)])
+
+
+    def __str__(self):
+        return self.product.name
